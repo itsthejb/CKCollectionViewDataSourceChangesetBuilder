@@ -7,9 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		496804331BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 496804321BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h */; };
-		496804351BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 496804341BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.m */; };
+		06BF561AD279BC6565DCA8D5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83756B711ED8412D326E8DB5 /* libPods.a */; };
+		4968043E1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4968043C1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm */; settings = {ASSET_TAGS = (); }; };
+		4968044B1BC56DC00035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4968042F1BC56CFE0035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a */; settings = {ASSET_TAGS = (); }; };
+		496804521BC56E2F0035D4E0 /* CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 496804511BC56E2F0035D4E0 /* CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4968044C1BC56DC00035D4E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 496804271BC56CFE0035D4E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4968042E1BC56CFE0035D4E0;
+			remoteInfo = CKCollectionViewDataSourceChangesetBuilder;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		4968042D1BC56CFE0035D4E0 /* CopyFiles */ = {
@@ -18,7 +30,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				496804331BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -26,8 +37,14 @@
 
 /* Begin PBXFileReference section */
 		4968042F1BC56CFE0035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCKCollectionViewDataSourceChangesetBuilder.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		496804321BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKCollectionViewDataSourceChangesetBuilder.h; sourceTree = "<group>"; };
-		496804341BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKCollectionViewDataSourceChangesetBuilder.m; sourceTree = "<group>"; };
+		4968043B1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKCollectionViewDataSourceChangesetBuilder.h; sourceTree = "<group>"; };
+		4968043C1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CKCollectionViewDataSourceChangesetBuilder.mm; sourceTree = "<group>"; };
+		496804461BC56DC00035D4E0 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4968044A1BC56DC00035D4E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		496804511BC56E2F0035D4E0 /* CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m; sourceTree = "<group>"; };
+		5B6078CBBE9F39A363E356E4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		83756B711ED8412D326E8DB5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2A3F0174DA78997985A92BD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +52,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06BF561AD279BC6565DCA8D5 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		496804431BC56DC00035D4E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4968044B1BC56DC00035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,7 +71,10 @@
 			isa = PBXGroup;
 			children = (
 				496804311BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder */,
+				496804471BC56DC00035D4E0 /* Tests */,
 				496804301BC56CFE0035D4E0 /* Products */,
+				BA51293FAAC793EAF6D42102 /* Pods */,
+				4FA95D8127A640489101ACE1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -53,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				4968042F1BC56CFE0035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a */,
+				496804461BC56DC00035D4E0 /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,10 +90,36 @@
 		496804311BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder */ = {
 			isa = PBXGroup;
 			children = (
-				496804321BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h */,
-				496804341BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.m */,
+				4968043B1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h */,
+				4968043C1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm */,
 			);
 			path = CKCollectionViewDataSourceChangesetBuilder;
+			sourceTree = "<group>";
+		};
+		496804471BC56DC00035D4E0 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				496804511BC56E2F0035D4E0 /* CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m */,
+				4968044A1BC56DC00035D4E0 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		4FA95D8127A640489101ACE1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83756B711ED8412D326E8DB5 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BA51293FAAC793EAF6D42102 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B2A3F0174DA78997985A92BD /* Pods.debug.xcconfig */,
+				5B6078CBBE9F39A363E356E4 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -73,9 +129,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 496804381BC56CFF0035D4E0 /* Build configuration list for PBXNativeTarget "CKCollectionViewDataSourceChangesetBuilder" */;
 			buildPhases = (
+				67186FF47FEB806CFB04DC22 /* Check Pods Manifest.lock */,
 				4968042B1BC56CFE0035D4E0 /* Sources */,
 				4968042C1BC56CFE0035D4E0 /* Frameworks */,
 				4968042D1BC56CFE0035D4E0 /* CopyFiles */,
+				582446E1C1F07EF31615AE2A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -85,6 +143,24 @@
 			productName = CKCollectionViewDataSourceChangesetBuilder;
 			productReference = 4968042F1BC56CFE0035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		496804451BC56DC00035D4E0 /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4968044E1BC56DC00035D4E0 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				496804421BC56DC00035D4E0 /* Sources */,
+				496804431BC56DC00035D4E0 /* Frameworks */,
+				496804441BC56DC00035D4E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4968044D1BC56DC00035D4E0 /* PBXTargetDependency */,
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = 496804461BC56DC00035D4E0 /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -96,6 +172,9 @@
 				ORGANIZATIONNAME = "Jonathan Crooke";
 				TargetAttributes = {
 					4968042E1BC56CFE0035D4E0 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+					496804451BC56DC00035D4E0 = {
 						CreatedOnToolsVersion = 7.0.1;
 					};
 				};
@@ -113,20 +192,80 @@
 			projectRoot = "";
 			targets = (
 				4968042E1BC56CFE0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder */,
+				496804451BC56DC00035D4E0 /* Tests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		496804441BC56DC00035D4E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		582446E1C1F07EF31615AE2A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		67186FF47FEB806CFB04DC22 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4968042B1BC56CFE0035D4E0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				496804351BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.m in Sources */,
+				4968043E1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		496804421BC56DC00035D4E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				496804521BC56E2F0035D4E0 /* CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4968044D1BC56DC00035D4E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4968042E1BC56CFE0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder */;
+			targetProxy = 4968044C1BC56DC00035D4E0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		496804361BC56CFF0035D4E0 /* Debug */ = {
@@ -209,8 +348,8 @@
 		};
 		496804391BC56CFF0035D4E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2A3F0174DA78997985A92BD /* Pods.debug.xcconfig */;
 			buildSettings = {
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -218,10 +357,30 @@
 		};
 		4968043A1BC56CFF0035D4E0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B6078CBBE9F39A363E356E4 /* Pods.release.xcconfig */;
 			buildSettings = {
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		4968044F1BC56DC00035D4E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.joncrooke.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		496804501BC56DC00035D4E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.joncrooke.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -244,6 +403,16 @@
 				4968043A1BC56CFF0035D4E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4968044E1BC56DC00035D4E0 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4968044F1BC56DC00035D4E0 /* Debug */,
+				496804501BC56DC00035D4E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
