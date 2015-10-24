@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		06BF561AD279BC6565DCA8D5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83756B711ED8412D326E8DB5 /* libPods.a */; };
+		4900376C1BDC4212007AF8F4 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4900376B1BDC4212007AF8F4 /* README.md */; };
 		4968043E1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4968043C1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm */; };
 		4968044B1BC56DC00035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4968042F1BC56CFE0035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a */; };
 		496804521BC56E2F0035D4E0 /* CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 496804511BC56E2F0035D4E0 /* CKTransactionalComponentDataSourceChangesetDSLBuilderTests.m */; };
@@ -38,6 +39,8 @@
 /* Begin PBXFileReference section */
 		490037651BDC3BC3007AF8F4 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = Podfile; sourceTree = "<group>"; };
 		490037661BDC3C09007AF8F4 /* CKCollectionViewDataSourceChangesetBuilder.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = CKCollectionViewDataSourceChangesetBuilder.podspec; sourceTree = "<group>"; };
+		4900376A1BDC41E6007AF8F4 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		4900376B1BDC4212007AF8F4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4968042F1BC56CFE0035D4E0 /* libCKCollectionViewDataSourceChangesetBuilder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCKCollectionViewDataSourceChangesetBuilder.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4968043B1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKCollectionViewDataSourceChangesetBuilder.h; sourceTree = "<group>"; };
 		4968043C1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CKCollectionViewDataSourceChangesetBuilder.mm; sourceTree = "<group>"; };
@@ -77,6 +80,8 @@
 				496804301BC56CFE0035D4E0 /* Products */,
 				BA51293FAAC793EAF6D42102 /* Pods */,
 				4FA95D8127A640489101ACE1 /* Frameworks */,
+				4900376A1BDC41E6007AF8F4 /* LICENSE */,
+				4900376B1BDC4212007AF8F4 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -298,6 +303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4900376C1BDC4212007AF8F4 /* README.md in Sources */,
 				4968043E1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
