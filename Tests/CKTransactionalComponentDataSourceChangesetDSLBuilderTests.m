@@ -71,22 +71,19 @@ static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
   [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
     builder.ck_moveItem.at.ck_indexPath(0, 0).to.ck_indexPath(4, 4);
     builder.move.item(nil).at.ck_indexPath(3, 3).to.ck_indexPath(1, 0);
-    builder.move.section.at.index(0).to.index(4);
   }];
 
   XCTAssertEqualObjects(self.changeset.movedItems, (@{ indexPath(0, 0) : indexPath(4, 4), indexPath(3, 3) : indexPath(1, 0) }));
 }
-/*
-- (void)_testMoveSectionNotSupported
-{
-  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
-    builder.move.section.at.index(0).to.index(4);
-  }];
-}
 
 - (void)testMoveSectionNotSupported
 {
-	XCTAssertThrows([self _testMoveSectionNotSupported]);
+  XCTAssertThrows(
+                  [CKCollectionViewDataSourceChangesetBuilder build:^
+                   (CKCollectionViewDataSourceChangesetBuilder *builder)
+  {
+    builder.move.section.at.index(0).to.index(4);
+  }]);
 }
-*/
+
 @end

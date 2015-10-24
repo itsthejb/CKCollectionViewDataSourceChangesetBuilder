@@ -72,7 +72,7 @@
 		496804261BC56CFE0035D4E0 = {
 			isa = PBXGroup;
 			children = (
-				496804311BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder */,
+				496804311BC56CFF0035D4E0 /* Classes */,
 				496804471BC56DC00035D4E0 /* Tests */,
 				496804301BC56CFE0035D4E0 /* Products */,
 				BA51293FAAC793EAF6D42102 /* Pods */,
@@ -89,12 +89,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		496804311BC56CFF0035D4E0 /* CKCollectionViewDataSourceChangesetBuilder */ = {
+		496804311BC56CFF0035D4E0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				4968043B1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.h */,
 				4968043C1BC56D260035D4E0 /* CKCollectionViewDataSourceChangesetBuilder.mm */,
 			);
+			name = Classes;
 			path = CKCollectionViewDataSourceChangesetBuilder;
 			sourceTree = "<group>";
 		};

@@ -95,6 +95,7 @@ using namespace CKChangesetBuilder;
 
 - (CKCollectionViewDataSourceChangesetBuilder *)section {
   NSAssert(self.verb != Verb::None, @"Expression contains noun, but no verb");
+  NSAssert(self.verb != Verb::Move, @"Section moving is not supported");
   NSAssert(self.element == Element::None, @"Expression contains >1 element");
   self.element = Element::Section;
   return self;
