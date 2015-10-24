@@ -6,6 +6,7 @@
 //  Copyright © 2015 Jonathan Crooke. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <ComponentKit/CKTransactionalComponentDataSourceChangeset.h>
 
 /**

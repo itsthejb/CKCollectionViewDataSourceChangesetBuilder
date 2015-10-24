@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.source        = { :git => "https://github.com/itsthejb/CKCollectionViewDataSourceChangesetBuilder.git", :tag => "v" + s.version.to_s }
   s.ios.deployment_target = '7.0'
   s.source_files  = s.name + '/**/*.{h,m}'
-  s.frameworks    = 'Foundation'
+  s.frameworks    = 'UIKit'
 	s.dependency 'ComponentKit', '>= 0.13'
   s.library = 'c++'
   s.xcconfig = {
