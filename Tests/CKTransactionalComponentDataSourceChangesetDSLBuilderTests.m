@@ -11,8 +11,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "CKTransactionalComponentDataSourceChangeset.h"
-#import "CKTransactionalComponentDataSourceChangesetInternal.h"
+#import "CKCollectionViewDataSourceChangesetBuilder.h"
+#import <ComponentKit/CKTransactionalComponentDataSourceChangeset.h>
+#import <ComponentKit/CKTransactionalComponentDataSourceChangesetInternal.h>
 
 static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
   return [NSIndexPath indexPathForItem:item inSection:section];
@@ -74,7 +75,18 @@ static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
   }];
 
   XCTAssertEqualObjects(self.changeset.movedItems, (@{ indexPath(0, 0) : indexPath(4, 4), indexPath(3, 3) : indexPath(1, 0) }));
-  XCTAssertEqualObjects(self.changeset.movedSections, (@{ @0 : @4 }));
+}
+/*
+- (void)_testMoveSectionNotSupported
+{
+  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.move.section.at.index(0).to.index(4);
+  }];
 }
 
+- (void)testMoveSectionNotSupported
+{
+	XCTAssertThrows([self _testMoveSectionNotSupported]);
+}
+*/
 @end

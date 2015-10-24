@@ -1,5 +1,5 @@
 //
-//  Header.h
+//  CKCollectionViewDataSourceChangesetBuilder.h
 //  CKCollectionViewDataSourceChangesetBuilder
 //
 //  Created by Jonathan Crooke on 07/10/2015.
