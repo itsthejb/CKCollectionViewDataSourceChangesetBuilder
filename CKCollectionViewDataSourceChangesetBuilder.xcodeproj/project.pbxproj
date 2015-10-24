@@ -120,9 +120,9 @@
 			isa = PBXGroup;
 			children = (
 				490037651BDC3BC3007AF8F4 /* Podfile */,
+				490037661BDC3C09007AF8F4 /* CKCollectionViewDataSourceChangesetBuilder.podspec */,
 				B2A3F0174DA78997985A92BD /* Pods.debug.xcconfig */,
 				5B6078CBBE9F39A363E356E4 /* Pods.release.xcconfig */,
-				490037661BDC3C09007AF8F4 /* CKCollectionViewDataSourceChangesetBuilder.podspec */,
 			);
 			name = Pods;
 			sourceTree = "<group>";

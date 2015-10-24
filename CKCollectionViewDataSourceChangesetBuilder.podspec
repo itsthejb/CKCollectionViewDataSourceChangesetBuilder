@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
   s.source_files  = s.name + '/**/*.{h,m}'
   s.frameworks    = 'Foundation'
+	s.dependency 'ComponentKit', '>= 0.13'
   s.library = 'c++'
   s.xcconfig = {
   'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',

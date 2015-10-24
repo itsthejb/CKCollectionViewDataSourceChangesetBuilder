@@ -62,7 +62,7 @@ static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
   XCTAssertEqualObjects(self.changeset.updatedItems, (@{ indexPath(5, 6) : @"Foo", indexPath(1, 1) : @"Bar" }));
 }
 
-- (void)testMoves
+- (void)testMoveItems
 {
   self.changeset =
   [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
