@@ -1,0 +1,5 @@
+language: objective-c
+cache: cocoapods
+before_install:
+  - gem install cocoapods -v 0.39.0
+script: xctool -workspace CKCollectionViewDataSourceChangesetBuilder.xcworkspace -scheme Tests -sdk iphonesimulator test
