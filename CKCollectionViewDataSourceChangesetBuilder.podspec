@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author        = { "Jonathan Crooke" => "jon.crooke@gmail.com" }
   s.source        = { :git => "https://github.com/itsthejb/CKCollectionViewDataSourceChangesetBuilder.git", :tag => "v" + s.version.to_s }
   s.ios.deployment_target = '7.0'
-  s.source_files  = s.name + '/**/*.{h,m}'
+  s.source_files  = s.name + '/**/*.{h,mm}'
   s.frameworks    = 'UIKit'
 	s.dependency 'ComponentKit', '>= 0.13'
 end
