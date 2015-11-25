@@ -36,7 +36,7 @@ static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
   XCTAssertEqualObjects(self.changeset.insertedItems, (@{ indexPath(0, 0) : @"Foo", indexPath(1, 0) : @"Bar" }));
 }
 
-- (void)testRemovals
+- (void)testRemovalSingular
 {
   self.changeset =
   [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder)
@@ -51,6 +51,23 @@ static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
   XCTAssertEqualObjects(self.changeset.removedItems, ([NSSet setWithObjects:indexPath(10, 5), indexPath(1, 1), nil]));
 }
 
+- (void)testRemovePlurals
+{
+  NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 3)];
+  self.changeset =
+  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder)
+   {
+     builder.remove.sections.at.indexes(indexSet);
+     builder.remove.items(nil).at.indexPaths(@[indexPath(1, 3), indexPath(5, 6)]);
+     builder.ck_removeItems.at.indexPaths(@[indexPath(2, 2), indexPath(9, 8)]);
+   }];
+
+  XCTAssertEqualObjects(self.changeset.removedSections, indexSet);
+  XCTAssertEqualObjects(self.changeset.removedItems,
+                        ([NSSet setWithObjects:
+                          indexPath(1, 3), indexPath(5, 6), indexPath(2, 2), indexPath(9, 8), nil]));
+}
+
 - (void)testUpdates
 {
   self.changeset =
@@ -62,7 +79,23 @@ static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
   XCTAssertEqualObjects(self.changeset.updatedItems, (@{ indexPath(5, 6) : @"Foo", indexPath(1, 1) : @"Bar" }));
 }
 
-- (void)testMoveItems
+- (void)testUpdatePlurals
+{
+  self.changeset =
+  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.update.at.indexPaths(@[indexPath(1, 2), indexPath(9, 8)]).with.items(@[@4, @5]);
+  }];
+  XCTAssertEqualObjects(self.changeset.updatedItems, (@{ indexPath(1, 2) : @4, indexPath(9, 8) : @5 }));
+}
+
+- (void)testUpdatePluralsWithCountMismatch
+{
+  XCTAssertThrows([CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.update.at.indexPaths(@[indexPath(1, 2), indexPath(9, 8)]).with.items(@[@5]);
+  }]);
+}
+
+- (void)testMoveItemSingular
 {
   self.changeset =
   [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
@@ -75,11 +108,60 @@ static NSIndexPath *indexPath(NSInteger item, NSInteger section) {
 
 - (void)testMoveSectionNotSupported
 {
-  XCTAssertThrows(
-                  [CKCollectionViewDataSourceChangesetBuilder build:^
-                   (CKCollectionViewDataSourceChangesetBuilder *builder)
-  {
+  XCTAssertThrows([CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
     builder.move.section.at.index(0).to.index(4);
+  }]);
+}
+
+- (void)testArrayItemsValid
+{
+  self.changeset =
+  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.insert.items(@[@1,@2,@3]).at.indexPaths(@[indexPath(1, 4), indexPath(2, 3), indexPath(9, 8)]);
+  }];
+  XCTAssertEqualObjects(self.changeset.insertedItems, (@{ indexPath(1, 4) : @1, indexPath(2, 3) : @2, indexPath(9, 8) : @3 }));
+}
+
+- (void)testArrayItemsMismatchedCounts
+{
+  XCTAssertThrows([CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.insert.items(@[@2,@3]).at.indexPaths(@[[NSIndexPath indexPathForItem:0 inSection:0]]);
+  }]);
+}
+
+- (void)testInsertMap
+{
+  NSDictionary *map = @{ @1 : indexPath(4, 4), @2 : indexPath(1, 0), @3: indexPath(2, 2) };
+  self.changeset =
+  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.insert.items(map);
+  }];
+  XCTAssertEqualObjects(self.changeset.insertedItems, map);
+}
+
+- (void)testInsertSectionIndexes
+{
+  NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(3, 2)];
+	self.changeset =
+  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.insert.sections.at.indexes(sections);
+  }];
+  XCTAssertEqualObjects(self.changeset.insertedSections, sections);
+}
+
+- (void)testMovePlural
+{
+  self.changeset =
+  [CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.move.indexPaths(@[indexPath(3, 1), indexPath(6, 7)]).to.indexPaths(@[indexPath(2, 3), indexPath(11, 3)]);
+  }];
+  XCTAssertEqualObjects(self.changeset.movedItems, (@{ indexPath(3, 1) : indexPath(2, 3), indexPath(6, 7) : indexPath(11, 3) }));
+}
+
+- (void)testMovePluralSizeMismatch
+{
+  XCTAssertThrows([CKCollectionViewDataSourceChangesetBuilder build:^(CKCollectionViewDataSourceChangesetBuilder *builder) {
+    builder.move.indexPaths(@[indexPath(3, 1)]).to.indexPaths(@[indexPath(2, 3), indexPath(11, 3)]);
   }]);
 }
 
