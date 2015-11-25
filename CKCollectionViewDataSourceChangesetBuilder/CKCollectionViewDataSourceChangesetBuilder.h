@@ -47,9 +47,13 @@
 
 /** Nouns */
 @property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *section;
+@property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *sections;
 @property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *(^item)(id item);
+@property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *(^items)(id itemsOrMap);
 @property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *(^index)(NSUInteger index);
+@property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *(^indexes)(NSIndexSet *indexSet);
 @property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *(^indexPath)(NSIndexPath *indexPath);
+@property (nonatomic, strong, readonly) CKCollectionViewDataSourceChangesetBuilder *(^indexPaths)(NSArray *indexPaths);
 
 /** 
  Prepositions 
@@ -64,6 +68,8 @@
 /**
  Additional syntactic sugar
  */
-#define ck_indexPath(ITEM, SECTION)	indexPath([NSIndexPath indexPathForItem:ITEM inSection:SECTION])
-#define ck_removeItem 							remove.item(nil)
-#define ck_moveItem 								move.item(nil)
+#define ck_indexPath(ITEM, SECTION)		indexPath([NSIndexPath indexPathForItem:ITEM inSection:SECTION])
+#define ck_indexPaths(ITEM, SECTION)	indexPath([NSIndexPath indexPathForItem:ITEM inSection:SECTION])
+#define ck_removeItem 								remove.item(nil)
+#define ck_removeItems								remove.items(nil)
+#define ck_moveItem 									move.item(nil)

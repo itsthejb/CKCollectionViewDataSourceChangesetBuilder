@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name          = "CKCollectionViewDataSourceChangesetBuilder"
-  s.version       = "0.9.1"
+  s.version       = "0.9.2"
   s.summary       = "DSL changeset builder for ComponentKit."
   s.description   = "Provides a builder pattern DSL for creating CKTransactionalComponentDataSourceChangeset instances"
   s.homepage      = "https://github.com/itsthejb/CKCollectionViewDataSourceChangesetBuilder"
