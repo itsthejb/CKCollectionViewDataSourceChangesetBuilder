@@ -23,11 +23,14 @@ using namespace CKChangesetBuilder;
 @interface CKCollectionViewDataSourceChangesetBuilder ()
 @property (nonatomic, assign) Verb::Type verb;
 @property (nonatomic, assign) Element::Type element;
+@property (nonatomic, assign) BOOL plural;
 @property (nonatomic, strong) id object;
 @property (nonatomic, assign) NSNumber *sectionIndex;
+@property (nonatomic, strong) NSIndexSet *sectionIndexes;
 @property (nonatomic, strong) NSIndexPath *itemIndexPath;
-@property (nonatomic, assign) NSNumber *sectionMoveIndex;
+@property (nonatomic, strong) NSArray *itemIndexPaths;
 @property (nonatomic, strong) NSIndexPath *itemMoveIndexPath;
+@property (nonatomic, strong) NSArray *itemMoveIndexPaths;
 - (void)storeIfExpressionComplete;
 - (void)reset;
 @end
@@ -38,7 +41,6 @@ using namespace CKChangesetBuilder;
   NSMutableSet *_removedItems;
   NSMutableIndexSet *_removedSections;
   NSMutableDictionary *_movedItems;
-  NSMutableDictionary *_movedSections;
   NSMutableIndexSet *_insertedSections;
   NSMutableDictionary *_insertedItems;
 }
@@ -48,7 +50,6 @@ using namespace CKChangesetBuilder;
   if ((self = [super init])) {
     _updatedItems = [NSMutableDictionary dictionary];
     _movedItems = [NSMutableDictionary dictionary];
-    _movedSections = [NSMutableDictionary dictionary];
     _insertedItems = [NSMutableDictionary dictionary];
     _removedItems = [NSMutableSet set];
     _removedSections = [NSMutableIndexSet indexSet];
@@ -101,6 +102,12 @@ using namespace CKChangesetBuilder;
   return self;
 }
 
+- (CKCollectionViewDataSourceChangesetBuilder *)sections {
+  CKCollectionViewDataSourceChangesetBuilder *builder = [self section];
+  self.plural = YES;
+  return builder;
+}
+
 - (CKCollectionViewDataSourceChangesetBuilder *)at {
   NSAssert(self.verb != Verb::None, @"Expression contains no verb");
   NSAssert((self.element == Element::Section && !self.sectionIndex) ||
@@ -112,28 +119,40 @@ using namespace CKChangesetBuilder;
 
 - (CKCollectionViewDataSourceChangesetBuilder *)to {
   NSAssert(self.verb == Verb::Move, @"Preposition only valid for move operation");
-  NSAssert((self.element == Element::Section && self.sectionIndex) ||
-           (self.element == Element::Item && self.itemIndexPath),
+  NSAssert((self.element == Element::Section && (self.sectionIndex || self.sectionIndexes)) ||
+           (self.element == Element::Item && (self.itemIndexPath || self.itemIndexPaths)),
            @"Expression contains no source index or indexPath for move");
   return self;
 }
 
 - (CKCollectionViewDataSourceChangesetBuilder *)with {
   NSAssert(self.verb == Verb::Update, @"Preposition only valid for update operation");
-  NSAssert(self.itemIndexPath, @"Now indexPath for update operation");
+  NSAssert(self.itemIndexPath || self.itemIndexPaths, @"No indexPath(s) for update operation");
   return self;
 }
 
-- (CKCollectionViewDataSourceChangesetBuilder *(^)(id))item {
+- (CKCollectionViewDataSourceChangesetBuilder *(^)(id))_item {
   NSAssert(self.verb != Verb::None, @"Expression contains no verb");
-  NSAssert(self.element == Element::None, @"Expression already contains a noun");
-  self.element = Element::Item;
+  NSAssert(self.element == Element::None || self.verb == Verb::Update, @"Expression already contains a noun");
   return ^(id item) {
     NSAssert(self.verb != Verb::Insert || item, @"Object required for insert operation");
     self.object = item;
     [self storeIfExpressionComplete];
     return self;
   };
+}
+
+- (CKCollectionViewDataSourceChangesetBuilder *(^)(id))item {
+  id block = [self _item];
+  self.element = Element::Item;
+  return block;
+}
+
+- (CKCollectionViewDataSourceChangesetBuilder *(^)(id))items {
+  id block = [self _item];
+  self.element = Element::Item;
+  self.plural = YES;
+  return block;
 }
 
 - (CKCollectionViewDataSourceChangesetBuilder *(^)(NSUInteger))index {
@@ -144,11 +163,26 @@ using namespace CKChangesetBuilder;
       case Verb::Remove:
         self.sectionIndex = @(index);
         break;
-      case Verb::Move:
-        self.sectionIndex ? self.sectionMoveIndex = @(index) : self.sectionIndex = @(index);
+      default:
+        NSAssert(NO, @"Not valid for Update or Move");
+        break;
+    }
+    [self storeIfExpressionComplete];
+    return self;
+  };
+}
+
+- (CKCollectionViewDataSourceChangesetBuilder *(^)(NSIndexSet *))indexes {
+  NSAssert(self.plural, @"Only valid for plural sections");
+  NSAssert(self.element == Element::Section, @"Index only valid for section operations");
+  return ^(NSIndexSet *indexes) {
+    switch (self.verb) {
+      case Verb::Insert:
+      case Verb::Remove:
+        self.sectionIndexes = indexes;
         break;
       default:
-        NSAssert(NO, @"Not valid for Update");
+        NSAssert(NO, @"Only valid for insert and remove");
         break;
     }
     [self storeIfExpressionComplete];
@@ -176,57 +210,125 @@ using namespace CKChangesetBuilder;
   };
 }
 
-- (void)storeIfExpressionComplete
+- (CKCollectionViewDataSourceChangesetBuilder *(^)(NSArray *))indexPaths {
+  NSAssert(self.element == Element::Item || self.verb == Verb::Update || self.verb == Verb::Move, @"Expression contains no object");
+  self.element = Element::Item;
+  NSAssert(!self.itemMoveIndexPaths || self.plural, @"Only valid for plural object operations");
+  return ^(NSArray *indexPaths) {
+    switch (self.verb) {
+      case Verb::Insert:
+      case Verb::Remove:
+      case Verb::Update:
+        self.itemIndexPaths = indexPaths;
+        break;
+      case Verb::Move:
+        self.itemIndexPaths ? self.itemMoveIndexPaths = indexPaths : self.itemIndexPaths = indexPaths;
+        break;
+      default:
+        break;
+    }
+    [self storeIfExpressionComplete];
+    return self;
+  };
+}
+
+#pragma mark Parse expressions
+
+- (void)_storeIfUpdate
 {
-  NSAssert(self.verb != Verb::None, @"Expression contains no verb");
-  NSAssert(self.element != Element::None || self.verb == Verb::Update, @"Expression contains no noun");
-  switch (self.verb)
+  /** Singular */
+  if (self.object && self.itemIndexPath) {
+    NSAssert2(!_updatedItems[self.itemIndexPath],
+              @"Already object %@ for indexPath %@",
+              self.object, self.itemIndexPath);
+    _updatedItems[self.itemIndexPath] = self.object;
+    [self reset];
+  }
+
+  /** Plural */
+  else if ([self.object isKindOfClass:[NSArray class]] && self.itemIndexPaths) {
+    NSAssert2([self.object count] == self.itemIndexPaths.count,
+              @"Update array count mismatch",
+              self.object, self.itemIndexPaths);
+    for (NSUInteger i = 0; i < [self.object count]; ++i) {
+      _updatedItems[self.itemIndexPaths[i]] = [self.object objectAtIndex:i];
+    }
+    [self reset];
+  }
+}
+
+- (void)_storeIfInsert
+{
+  switch (self.element) {
+    case Element::Section:
+      return [self _storeIfInsertSection];
+    case Element::Item:
+      return [self _storeIfInsertItem];
+    default:
+      break;
+  }
+}
+
+- (void)_storeIfInsertSection
+{
+  /** singular */
+  if (self.sectionIndex)
   {
-    case Verb::Update:
-      /** Update item */
-      if (self.object && self.itemIndexPath) {
-        NSAssert2(!_updatedItems[self.itemIndexPath],
-                  @"Already object %@ for indexPath %@",
-                  self.object, self.itemIndexPath);
-        _updatedItems[self.itemIndexPath] = self.object;
-        [self reset];
-      }
-      break;
+    NSAssert1(![_insertedSections containsIndex:self.sectionIndex.unsignedIntegerValue],
+              @"Inserted sections already contains index %@", self.sectionIndex);
+    [_insertedSections addIndex:self.sectionIndex.unsignedIntegerValue];
+    [self reset];
+  }
 
-    case Verb::Insert:
-      /** Insert section */
-      if (self.element == Element::Section && self.sectionIndex)
-      {
-        NSAssert1(![_insertedSections containsIndex:self.sectionMoveIndex.unsignedIntegerValue],
-                  @"Inserted sections already contains index %@", self.sectionIndex);
-        [_insertedSections addIndex:self.sectionMoveIndex.unsignedIntegerValue];
-        [self reset];
-      }
+  /** plural */
+  else if (self.sectionIndexes) {
+    [_insertedSections addIndexes:self.sectionIndexes];
+    [self reset];
+  }
+}
 
-      /** Insert item */
-      else if (self.element == Element::Item && self.object && self.itemIndexPath)
-      {
-        NSAssert2(!_insertedItems[self.itemIndexPath],
-                  @"Inserted items already contains object %@ for indexPath %@",
-                  self.object, self.itemIndexPath);
-        _insertedItems[self.itemIndexPath] = self.object;
-        [self reset];
-      }
-      break;
+- (void)_storeIfInsertItem
+{
+  /** Insert item */
+  if (self.object) {
 
-    case Verb::Move:
-      /** Move section */
-      if (self.element == Element::Section && self.sectionIndex && self.sectionMoveIndex)
-      {
-        NSAssert2(!_movedSections[self.sectionIndex],
-                  @"Section move already exists from %@ to %@",
-                  self.sectionIndex, self.sectionMoveIndex);
-        _movedSections[self.sectionIndex] = self.sectionMoveIndex;
-        [self reset];
+    /** Singular */
+    if (self.itemIndexPath) {
+      NSAssert2(!_insertedItems[self.itemIndexPath],
+                @"Inserted items already contains object %@ for indexPath %@",
+                self.object, self.itemIndexPath);
+      _insertedItems[self.itemIndexPath] = self.object;
+      [self reset];
+    }
+
+    /** Plural */
+    else if (self.itemIndexPaths) {
+      /** item array -> indexPath array */
+      NSAssert1([self.object isKindOfClass:[NSArray class]],
+                @"For plural insert at indexPaths, item object must be array of insert items: %@",
+                self.object);
+      NSAssert2([self.object count] == self.itemIndexPaths.count,
+                @"Item and indexPath array count mismatch %@ %@",
+                self.object, self.itemIndexPaths);
+      for (NSUInteger i = 0; i < [self.object count]; ++i) {
+        _insertedItems[self.itemIndexPaths[i]] = [self.object objectAtIndex:i];
       }
 
-      /** Move item */
-      else if (self.element == Element::Item && self.itemIndexPath && self.itemMoveIndexPath)
+    } else if ([self.object isKindOfClass:[NSDictionary class]]) {
+      /** Item map */
+      [_insertedItems addEntriesFromDictionary:self.object];
+      [self reset];
+    }
+  }
+}
+
+- (void)_storeIfMove
+{
+  /** Move section */
+  switch (self.element) {
+    case Element::Item:
+      /** Singular */
+      if (self.itemIndexPath && self.itemMoveIndexPath)
       {
         NSAssert2(!_movedItems[self.itemIndexPath],
                   @"Item move already exists from %@ to %@",
@@ -234,11 +336,29 @@ using namespace CKChangesetBuilder;
         _movedItems[self.itemIndexPath] = self.itemMoveIndexPath;
         [self reset];
       }
+
+      else if (self.itemIndexPaths && self.itemMoveIndexPaths) {
+        NSAssert2(self.itemIndexPaths.count == self.itemMoveIndexPaths.count,
+                  @"Item move array count mismatch: %@ %@",
+                  self.itemIndexPaths, self.itemMoveIndexPaths);
+        for (NSUInteger i = 0; i < self.itemIndexPaths.count; ++i) {
+          _movedItems[self.itemIndexPaths[i]] = self.itemMoveIndexPaths[i];
+        }
+        [self reset];
+      }
       break;
 
-    case Verb::Remove:
-      /** Remove section */
-      if (self.element == Element::Section && self.sectionIndex)
+    default:
+      break;
+  }
+}
+
+- (void)_storeIfRemove
+{
+  /** Remove section */
+  switch (self.element) {
+    case Element::Section:
+      if (self.sectionIndex)
       {
         NSAssert1(![_removedSections containsIndex:self.sectionIndex.unsignedIntegerValue],
                   @"Section %@ already stored for removal", self.sectionIndex);
@@ -246,8 +366,15 @@ using namespace CKChangesetBuilder;
         [self reset];
       }
 
-      /** Remove item */
-      else if (self.element == Element::Item && self.itemIndexPath)
+      else if (self.sectionIndexes) {
+        [_removedSections addIndexes:self.sectionIndexes];
+        [self reset];
+      }
+
+      break;
+
+    case Element::Item:
+      if (self.itemIndexPath)
       {
         NSAssert1(![_removedItems member:self.itemIndexPath],
                   @"Item at indexPath %@ already stored for removal",
@@ -255,8 +382,34 @@ using namespace CKChangesetBuilder;
         [_removedItems addObject:self.itemIndexPath];
         [self reset];
       }
+
+      else if (self.itemIndexPaths)
+      {
+        [_removedItems addObjectsFromArray:self.itemIndexPaths];
+        [self reset];
+      }
       break;
 
+    default:
+      break;
+  }
+}
+
+- (void)storeIfExpressionComplete
+{
+  NSAssert(self.verb != Verb::None, @"Expression contains no verb");
+  NSAssert(self.element != Element::None || self.verb == Verb::Update, @"Expression contains no noun");
+
+  switch (self.verb)
+  {
+    case Verb::Update:
+      return [self _storeIfUpdate];
+    case Verb::Insert:
+      return [self _storeIfInsert];
+    case Verb::Move:
+      return [self _storeIfMove];
+    case Verb::Remove:
+      return [self _storeIfRemove];
     default:
       break;
   }
@@ -267,8 +420,11 @@ using namespace CKChangesetBuilder;
   self.verb = Verb::None;
   self.element = Element::None;
   self.object = nil;
-  self.sectionIndex = self.sectionMoveIndex = nil;
+  self.plural = NO;
+  self.sectionIndexes = nil;
+  self.sectionIndex = nil;
   self.itemIndexPath = self.itemMoveIndexPath = nil;
+  self.itemIndexPaths = self.itemMoveIndexPaths = nil;
 }
 
 - (CKTransactionalComponentDataSourceChangeset *)build
